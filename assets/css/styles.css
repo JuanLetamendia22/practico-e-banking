@@ -1,0 +1,104 @@
+/*General*/
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Merriweather", serif;
+    color: #046db5;
+}
+hr{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    a:focus-visible, input:focus-visible {
+      outline: 2px solid oklch(60% 0.15 210); 
+    }
+
+    a:hover, input[type="submit"]:hover{
+        background-color:black;
+        border-color: black;
+    }
+
+    a{
+      text-decoration: none;
+      border: solid;
+      background-color: white;
+      border-color: white;
+      border-radius: 5px;
+    }
+/*Fuentes y texto*/
+  
+  .titulo {
+    font-family: "Merriweather", serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  .italicas {
+    font-family: "Merriweather", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .titulo-centrado{
+    text-align: center;
+    padding: 1%;
+  }
+
+  .aviso-off{
+    display: none;
+  }
+
+  .aviso-on{
+    display: inline;
+    color: red;
+  }
+  
+/*Background*/
+
+body{
+    background-color:#d3eaf2;
+}
+  
+
+  /*Elementos del Login*/
+  .header-login{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .logo-login{
+    text-align: center;
+  }
+
+  
+  .form{
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+  }
+  .item-form{
+    padding: 1%;
+    margin: 0.5%;
+  }
+
+  .form-login input[type="submit"]{
+    min-width: 200px;
+    width:40% ;
+  }
+
+  .form-login input{
+    border-radius: 5px;
+    
+  }
