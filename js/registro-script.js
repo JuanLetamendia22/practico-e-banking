@@ -1,7 +1,8 @@
 
+//Estudiar bien las expresiones regulares
 const expresiones = {
-	nombre: /^[a-zA-ZÀ-ÿ\s]{1,20}$/, // Permite letras, acentos, y tambien espacios.
-    apellido: /^[a-zA-ZÀ-ÿ\s]{1,20}$/, 
+	nombre: /^[a-zA-ZÀ-ÿ\s]{1,50}$/, // Permite letras, acentos, y tambien espacios.
+    apellido: /^[a-zA-ZÀ-ÿ\s]{1,50}$/, 
 	password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/,
 	email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 }
