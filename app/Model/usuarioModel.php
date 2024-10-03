@@ -11,9 +11,17 @@ class Usuario extends conexionBD
     private $conexion;
 
     //Hereda la conexion a BD
-    public function __construct(){
-        $this -> conexion = new conexionBD();
-        $this -> conexion = $this -> conexion -> obtenerConexion();
+    public function __construct($nroCuenta=null){
+        parent::__construct();
+        $this -> conexion = $this -> obtenerConexion();
+
+        if($nroCuenta!=null){
+            $usuarioMom= $this->obtenerUsuarioBDporNroCuenta($nroCuenta);
+            $this->nombre=$usuarioMom["Nombre"];
+            $this->apellido=$usuarioMom["Apellido"];
+            $this->email=$usuarioMom["email"];
+            $this->nroCuenta=$nroCuenta;
+        }
     }
 
     private function existeEmail($email) {
@@ -35,6 +43,20 @@ class Usuario extends conexionBD
       $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
       return $usuario;
+    }
+
+    private function obtenerUsuarioBDporNroCuenta($nroCuenta){
+        $sql = "SELECT * FROM usuarios WHERE NroCuenta = :NroCuenta";
+        $stmt = $this-> conexion ->prepare($sql);
+     
+        // Ejecutar la consulta SQL, pasando el nombre de usuario como parámetro        
+        $stmt->execute([':NroCuenta' => $nroCuenta]);
+     
+      // Obtener la fila del usuario de la base de datos
+      $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      return $usuario;
+
     }
 
     private function existeNroCuenta($nroCuenta){
@@ -59,6 +81,7 @@ class Usuario extends conexionBD
         }else{
            
             $nroCuenta= (string) $nroCuenta;
+            //Formateo el numero para que si es un numero random menor de 24 digitos, se rellene con 0 a la izquierda
             $numeroFormateado = str_pad( $nroCuenta, 24, '0', STR_PAD_LEFT);
             
             return $numeroFormateado;

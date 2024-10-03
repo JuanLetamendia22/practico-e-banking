@@ -51,6 +51,8 @@ hr{
     padding: 1%;
   }
 
+ 
+
   .aviso-off{
     display: none;
   }
@@ -59,7 +61,11 @@ hr{
     display: inline;
     color: red;
   }
-  
+ 
+  .texto-centrado{
+   text-align: center;
+ 
+  }
 /*Background*/
 
 body{
@@ -104,12 +110,12 @@ body{
   }
 
   .user{
-    width: 10%;
+    width: 50px;
   }
 
   nav {
     display: flex;
-    justify-content:end;
+    justify-content: space-evenly;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -117,24 +123,62 @@ body{
 }
 nav ul {
     list-style-type: none;
-    border: solid green;
     padding: 0;
     margin: 0;
    display: flex;
     
 }
 nav ul li {
-  border: solid maroon;
-  
+  display: flex;
     margin: 0 15px;  
 }
 nav ul li a {
-  border: solid red;
-    text-decoration: none;
-    
+    text-decoration: none;   
     font-size: 18px;
     padding:5px;
 }
-nav ul li a img{
-  border: solid black;
+
+.form-transferir{
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5rem;
+}
+
+.form-transferir input[type="text"]{
+  border: none;
+  border-radius: 5px;
+  height: 50px;
+  padding: 10px;
+}
+
+.form-transferir-destino{
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5rem;
+}
+
+.form-transferir-destino input[type="text"]{
+  border-radius: 5px;
+  height: 50px;
+  padding: 10px;
+}
+
+.form-submit{
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.form-submit input[type="submit"]{
+  height: 50px;
+  padding:5px;
 }

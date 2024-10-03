@@ -62,7 +62,7 @@
         </form>
         <?php
         // Mostrar errores si existen
-            if (empty($errores)) {
+            if (!empty($errores)) {
                 echo "<p style='color:red; text-align:center;'>$errores</p>";
             }
             if (isset($errores)) {

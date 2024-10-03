@@ -6,7 +6,7 @@ require_once ROOT_PATH.'/app/Controllers/validaciones.php';
 function registrarUsuario(){
     require_once ROOT_PATH.'/app/Model/usuarioModel.php';
     require_once ROOT_PATH.'/app/View/viewFormRegistro.php';
-    $errores="";
+    $errores=""; 
     $aciertos="";
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['passwordCh']) && !empty($_POST['nombre']) && !empty($_POST['apellido'])) {
 
@@ -65,7 +65,7 @@ function loginUsuario(){
                 $_SESSION['Id'] = $usuarioLogueado['Id'];
                 $_SESSION['Nombre'] = $usuarioLogueado['Nombre'];
                 $_SESSION['Apellido'] = $usuarioLogueado['Apellido'];
-                $_SESSION['NroCuenta'] = $usuarioLogueado['NroCuenta'];
+                $_SESSION['Email'] = $usuarioLogueado['Email'];
 
                   // Redirigir al usuario
                   header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarHome');
