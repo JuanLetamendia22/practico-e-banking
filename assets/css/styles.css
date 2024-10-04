@@ -139,6 +139,7 @@ nav ul li a {
 }
 
 .form-transferir{
+  margin-top: 20px;
   display: flex;
   justify-content: space-around;
   width: 60%;
@@ -181,4 +182,5 @@ nav ul li a {
 .form-submit input[type="submit"]{
   height: 50px;
   padding:5px;
+  margin-bottom: 50px;
 }

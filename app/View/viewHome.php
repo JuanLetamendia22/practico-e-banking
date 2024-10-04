@@ -7,10 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
         if (!isset($_SESSION['Id'])) {
             header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarLogin');
             exit();
-        }else{
-           $nombre= $_SESSION['Nombre']." ".$_SESSION['Apellido'];
-           $nroCuenta= $_SESSION['NroCuenta'];
-           $saldo= $_SESSION['Saldo'];
+        }if(isset($_SESSION['Nombre'])){
+            $nombre= $_SESSION['Nombre']." ".$_SESSION['Apellido'];
+        }if(isset($_SESSION['NroCuenta'])){
+            $nroCuenta= $_SESSION['NroCuenta'];
+            $saldo= $_SESSION['Saldo'];
         }
     }else{
         header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarLogin');
@@ -20,9 +21,10 @@ if (session_status() === PHP_SESSION_NONE) {
 //RUTAS
 $css = URL_PATH.'/assets/css/styles.css';
 $img = URL_PATH.'/assets/img/';
+$actionRealizarTransferencia;
 $actionValidarCuenta= URL_PATH.'/index.php?controller=transaccionesController&action=transferirVerificarCuenta';
 $verHistorial= URL_PATH."/index.php?controller=homeController&action=mostrarTransacciones";
-$transferir= URL_PATH.'/index.php?controller=transaccionesController&action=transferirIncio';
+$transferir= URL_PATH.'/index.php?controller=transaccionesController&action=transferirInicio';
 $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario";
 ?>
 
@@ -56,8 +58,9 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
     <main>
         <?php switch($_GET['action']): ?>
 <?php case 'mostrarHome':?>
-            <h2 class='titulo titulo-centrado'>Bienvenid@ $nombre</h2>
+            <h2 class='titulo titulo-centrado'>Bienvenid@ <?php echo $nombre?></h2>
             <p class='texto-centrado'>Si lo deseas, en el menú superior tienes una serie de opciones para elegir, puedes realizar una transferencia <br> ver el historial de transferencias o si entraste accidentalmente puedes desloguearte.</p>
+<?php break;?>
 <?php case 'transferirInicio':?>
         <h2 class='titulo titulo-centrado'>Transferir</h2>
         <form method="POST" action="<?php echo $actionValidarCuenta;?>">
@@ -77,7 +80,36 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
                 <input type="submit" value="Verificar cuenta de destino">
             </div>
         </form>
+<?php break;?>
 <?php case 'transferirVerificarCuenta':?>
+    <form method="POST" action="<?php echo $actionRealizarTransferencia;?>">
+            <div class="form-transferir">
+                <label for="cuentaOrigen">Cuenta Origen</label>
+                <input type="text" id="cuentaOrigen" name="cuentaOrigen" readonly value="<?php echo $nroCuenta;?>">
+                
+                <label for="saldo">Saldo</label>
+                <input type="text" id="saldo" name="saldo" readonly value="<?php echo $saldo;?>">
+            </div>
+
+            <div class="form-transferir">
+                <label for="cuentaDestino">Nro cuenta destino</label>
+                <input type="text" id="cuentaDestino" name="cuentaDestino"  readonly value="<?php echo $_SESSION['cuentaDestinatario']?>">
+            </div>
+
+            <div class="form-transferir">
+                <label for="destinatario">Nombre destinatario</label>
+                <input type="text" id="destinatario" name="destinatario"  readonly value="<?php echo $_SESSION['nombreDestinatario']." ".$_SESSION['apellidoDestinatario']; ?>">
+            </div>
+
+            <div class="form-transferir-destino">
+                <label for="monto">Monto a transferir</label>
+                <input type="text" id="monto" name="monto">
+            </div>
+            <div class="form-submit">
+                <input type="submit" value="Transferir">
+            </div>
+        </form>
+
 <?php endswitch ?>
         
 

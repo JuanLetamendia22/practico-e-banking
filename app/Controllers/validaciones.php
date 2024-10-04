@@ -40,5 +40,13 @@ function validarFormRegistro($email,$nombre ,$apellido , $password, $passwordCh)
     return $mensajeDeError;
 }
 
+function verificarFormatoCuenta($cuenta){
+    $regexFormatoCuenta='/^\d{24}$/';
 
+    if (preg_match($regexFormatoCuenta, $cuenta)) {
+        return "";
+    } else {
+        return "El formato de cuenta no es valido.";
+    }
+}
 ?>

@@ -23,20 +23,37 @@ function transferirInicio(){
 function transferirVerificarCuenta(){
 
     require_once ROOT_PATH.'/app/Model/cuentasModel.php';
+    require_once ROOT_PATH.'/app/Model/usuarioModel.php';
 
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    //TODO Comprobar datos enviados por post, luego agregarlos como argumentos en la creacion del usuario, para sacar el nombre y apellido del destinatario
-    $usuario= new Usuario();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['cuentaDestino'])){
 
-    $_SESSION['NroCuenta']= $cuenta->getNroCuenta();
-    $_SESSION['Saldo']= $cuenta->getSaldo();
+        $cuenta= htmlspecialchars($_POST['cuentaDestino']);
+        $errores= verificarFormatoCuenta($cuenta);
+
+        if($errores==""){
+        $usuario= new Usuario($cuenta);
+            if(($usuario->getNombre()&&$usuario->getApellido())!=null){
+
+                $_SESSION["nombreDestinatario"]=$usuario->getNombre();
+                $_SESSION["apellidoDestinatario"]=$usuario->getApellido();
+                $_SESSION["cuentaDestinatario"]=$cuenta;
+        }else{
+                $_SESSION["nombreDestinatario"]="";
+                $_SESSION["apellidoDestinatario"]="";
+                $_SESSION["cuentaDestinatario"]="";
+            require_once ROOT_PATH."/app/View/viewHome.php";
+        }
+
+    }
+    
 
     require_once ROOT_PATH."/app/View/viewHome.php";
 
+    }
 }
-
 
 
 

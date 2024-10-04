@@ -16,14 +16,24 @@ class Usuario extends conexionBD
         $this -> conexion = $this -> obtenerConexion();
 
         if($nroCuenta!=null){
-            $usuarioMom= $this->obtenerUsuarioBDporNroCuenta($nroCuenta);
-            $this->nombre=$usuarioMom["Nombre"];
-            $this->apellido=$usuarioMom["Apellido"];
-            $this->email=$usuarioMom["email"];
-            $this->nroCuenta=$nroCuenta;
+           
+            if($this->obtenerUsuarioBDporNroCuenta($nroCuenta)!=false){
+                $usuarioMom= $this->obtenerUsuarioBDporNroCuenta($nroCuenta);
+                $this->nombre=$usuarioMom["Nombre"];
+                $this->apellido=$usuarioMom["Apellido"];
+                $this->email=$usuarioMom["Email"];
+                $this->nroCuenta=$nroCuenta;
+            }
         }
     }
 
+
+    public function getNombre(){
+        return $this ->nombre;
+    }
+    public function getApellido(){
+        return $this ->apellido;
+    }
     private function existeEmail($email) {
         $sql = "SELECT * FROM usuarios WHERE email = :email";
         $stmt = $this->conexion->prepare($sql);

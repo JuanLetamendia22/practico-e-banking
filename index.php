@@ -32,7 +32,6 @@ if ( !empty ( $_GET [ 'action' ] ) ){
 
 $controller = CONTROLLERS_FOLDER . $controller . '.php';
 
-
 //Si la variable ($controller) es un fichero lo requerimos
 if ( is_file ( $controller ) ){
 require_once ($controller);
@@ -41,10 +40,10 @@ else
 {die ('El controlador no existe - 404 not found');}
 
 //Si la variable $action es una función la ejecutamos o detenemos el script
-if ( is_callable ($action) )
-$action();
-else
-die ('La accion no existe - 404 not found');
-
+if ( is_callable ($action) ){
+    $action();
+}else{
+    die ('La accion no existe - 404 not found');
+}
 
 ?>
