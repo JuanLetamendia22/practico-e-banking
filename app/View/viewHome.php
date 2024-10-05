@@ -9,9 +9,9 @@ if (session_status() === PHP_SESSION_NONE) {
             exit();
         }if(isset($_SESSION['Nombre'])){
             $nombre= $_SESSION['Nombre']." ".$_SESSION['Apellido'];
-        }if(isset($_SESSION['NroCuenta'])){
-            $nroCuenta= $_SESSION['NroCuenta'];
-            $saldo= $_SESSION['Saldo'];
+        }if(isset($_SESSION['nroCuenta']) && isset($_SESSION['saldo'])){
+            $nroCuenta= $_SESSION['nroCuenta'];
+            $saldo= $_SESSION['saldo'];
         }
     }else{
         header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarLogin');
@@ -21,7 +21,7 @@ if (session_status() === PHP_SESSION_NONE) {
 //RUTAS
 $css = URL_PATH.'/assets/css/styles.css';
 $img = URL_PATH.'/assets/img/';
-$actionRealizarTransferencia;
+$actionRealizarTransferencia= URL_PATH.'/index.php?controller=transaccionesController&action=transferirFinal';
 $actionValidarCuenta= URL_PATH.'/index.php?controller=transaccionesController&action=transferirVerificarCuenta';
 $verHistorial= URL_PATH."/index.php?controller=homeController&action=mostrarTransacciones";
 $transferir= URL_PATH.'/index.php?controller=transaccionesController&action=transferirInicio';
@@ -93,23 +93,36 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
 
             <div class="form-transferir">
                 <label for="cuentaDestino">Nro cuenta destino</label>
-                <input type="text" id="cuentaDestino" name="cuentaDestino"  readonly value="<?php echo $_SESSION['cuentaDestinatario']?>">
+                <input type="text" id="cuentaDestino" name="cuentaDestino"  readonly value="<?php echo $cuentaDestinatario;?>">
             </div>
 
             <div class="form-transferir">
                 <label for="destinatario">Nombre destinatario</label>
-                <input type="text" id="destinatario" name="destinatario"  readonly value="<?php echo $_SESSION['nombreDestinatario']." ".$_SESSION['apellidoDestinatario']; ?>">
+                <input type="text" id="destinatario" name="destinatario"  readonly value="<?php echo $nombreDestinatario; ?>">
             </div>
-
-            <div class="form-transferir-destino">
-                <label for="monto">Monto a transferir</label>
-                <input type="text" id="monto" name="monto">
-            </div>
-            <div class="form-submit">
-                <input type="submit" value="Transferir">
-            </div>
+                <?php if(!isset($cuentaInexistente)):?>
+                    <div class="form-transferir-destino">
+                        <label for="monto">Monto a transferir</label>
+                        <input type="text" id="monto" name="monto">
+                    </div>
+                    <div class="form-submit">
+                        <input type="submit" value="Transferir">
+                    </div>
+                    <?php else:?>
+                        <div class="mensajeError">
+                            <?php echo "<p>$cuentaInexistente</p>"?>
+                        </div>
+                <?php endif?>
         </form>
-
+    <?php break;?>
+<?php case 'transferirFinal':?>
+    <?php if(isset($errores) && $errores!=""):?>
+        <div class="mensajeError">
+            <?php echo "<p>$errores</p>" ?>
+        </div>
+    <?php else:?>
+    
+    <?php endif?>
 <?php endswitch ?>
         
 

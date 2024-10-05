@@ -52,5 +52,17 @@ class Transaccion extends ConexionBD{
     private $fecha;
     private $monto;
     private $concepto;
+    private $conexion;
+
+    public function __construct($cuentaOrigen,$cuentaDestino,$monto, $concepto){
+        parent::__construct();
+        $this -> conexion = $this -> obtenerConexion();
+
+    
+    }
+
+    public function realizarTransferencia(){
+           
+    }
 }
 ?>
