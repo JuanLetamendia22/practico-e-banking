@@ -68,9 +68,6 @@
             if (isset($errores)) {
                 echo $errores;
             }
-            if (!empty($aciertos)) {
-                echo "<p style='color:green; text-align:center;'>$aciertos</p>";
-            }
         ?>
         <hr>
         

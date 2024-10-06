@@ -74,13 +74,13 @@ function transferirFinal(){
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!empty($_POST['monto'] || $_POST['monto']==0))){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && (!empty($_POST['monto'] || $_POST['monto']==0)) && !empty($_POST['concepto'])){
 
-        $cuentaOrigen= $_POST['cuentaOrigen'];
-        $saldoCuenta= $_POST['saldo'];
-        $cuentaDestino= $_POST['cuentaDestino'];
-        $montoTransferir= $_POST['monto'];
-        $concepto="";
+        $cuentaOrigen= htmlspecialchars($_POST['cuentaOrigen']);
+        $saldoCuenta= htmlspecialchars($_POST['saldo']);
+        $cuentaDestino= htmlspecialchars($_POST['cuentaDestino']);
+        $montoTransferir= htmlspecialchars($_POST['monto']);
+        $concepto= htmlspecialchars($_POST['concepto']);
         $errores= verificarFormatoMonto($montoTransferir);
       
         if($errores!=""){
@@ -91,8 +91,15 @@ function transferirFinal(){
                 $errores.= "Monto introducido supera el saldo de la cuenta <br>Transacción fallida";
                 require_once ROOT_PATH."/app/View/viewHome.php";
             }else{
+                
                 $transferencia = new Transaccion($cuentaOrigen,$cuentaDestino,$montoTransferir, $concepto);
+                
+                
                 $transferencia->realizarTransferencia();
+                
+                $cuenta= new Cuenta($_SESSION['Email']);
+                $_SESSION['saldo']= $cuenta->getSaldo();
+
                 require_once ROOT_PATH."/app/View/viewHome.php";
             }
 
@@ -108,6 +115,35 @@ function transferirFinal(){
 
 }
 
+function listarTransferencias(){
+
+    require_once ROOT_PATH.'/app/Model/cuentasModel.php';
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if(isset($_SESSION['nroCuenta'])){
+    
+        $nroCuentaOrigen= $_SESSION['nroCuenta'];
+    
+    }elseif (isset($_SESSION['Email'])) {
+        
+        $cuenta= new Cuenta($_SESSION['Email']);
+
+        $nroCuentaOrigen= $cuenta->getNroCuenta();
+
+    }else{
+        $error="Ha ocurrido un error al listar las transferencias, imposible acceder a datos";
+        require_once ROOT_PATH."/app/View/viewHome.php";
+    }
+
+    $transaccion= new Transaccion();
+
+    $transferencias=$transaccion->listarTransferencias($nroCuentaOrigen);
+
+    require_once ROOT_PATH."/app/View/viewHome.php";
+}
 
 
 ?>

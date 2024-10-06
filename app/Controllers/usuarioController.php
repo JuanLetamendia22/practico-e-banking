@@ -28,8 +28,10 @@ function registrarUsuario(){
             $usuario = new Usuario();
             if ($usuario->registrarUsuario($email, $nombre, $apellido, $password)) {
                 
-                $aciertos.="Usuario registrado correctamente";
-                require_once ROOT_PATH.'/app/View/viewFormRegistro.php';
+                session_start();
+                $_SESSION['mensajeExitoRegistro'] = "Registro exitoso. Ya puedes inicia sesión.";
+                header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarLogin');
+                exit();
             } else {
                 $errores.="Error al registrar el usuario, el email ya existe en la base de datos";
                 require_once ROOT_PATH.'/app/View/viewFormRegistro.php';
@@ -58,7 +60,7 @@ function loginUsuario(){
             $usuario = new Usuario();
             $usuarioLogueado= $usuario ->loginUsuario($email, $password);
             
-            if ($usuarioLogueado) {
+            if ($usuarioLogueado !=false) {
                 // Iniciar sesión de PHP para mantener al usuario autenticado
                 session_start();
 
@@ -73,7 +75,7 @@ function loginUsuario(){
 
             }else {
                 // Mostrar un mensaje de error
-                $errores .= "El usuario al que intenta acceder no existe en la base de datos";
+                $errorLogin = "<p>El usuario al que intenta acceder no existe en la base de datos</p>";
                 require_once ROOT_PATH.'/app/View/viewFormLogin.php';
             }
          }

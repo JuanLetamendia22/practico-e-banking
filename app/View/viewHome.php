@@ -23,7 +23,7 @@ $css = URL_PATH.'/assets/css/styles.css';
 $img = URL_PATH.'/assets/img/';
 $actionRealizarTransferencia= URL_PATH.'/index.php?controller=transaccionesController&action=transferirFinal';
 $actionValidarCuenta= URL_PATH.'/index.php?controller=transaccionesController&action=transferirVerificarCuenta';
-$verHistorial= URL_PATH."/index.php?controller=homeController&action=mostrarTransacciones";
+$verHistorial= URL_PATH."/index.php?controller=transaccionesController&action=listarTransferencias";
 $transferir= URL_PATH.'/index.php?controller=transaccionesController&action=transferirInicio';
 $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario";
 ?>
@@ -66,10 +66,10 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
         <form method="POST" action="<?php echo $actionValidarCuenta;?>">
             <div class="form-transferir">
                 <label for="cuentaOrigen">Cuenta Origen</label>
-                <input type="text" id="cuentaOrigen" name="cuentaOrigen" readonly value="<?php echo $nroCuenta;?>">
+                <input type="text" id="cuentaOrigen" name="cuentaOrigen" readonly value="<?php echo htmlspecialchars($nroCuenta);?>">
                 
                 <label for="saldo">Saldo</label>
-                <input type="text" id="saldo" name="saldo" readonly value="<?php echo $saldo;?>">
+                <input type="text" id="saldo" name="saldo" readonly value="<?php echo htmlspecialchars($saldo);?>">
             </div>
 
             <div class="form-transferir-destino">
@@ -85,29 +85,35 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
     <form method="POST" action="<?php echo $actionRealizarTransferencia;?>">
             <div class="form-transferir">
                 <label for="cuentaOrigen">Cuenta Origen</label>
-                <input type="text" id="cuentaOrigen" name="cuentaOrigen" readonly value="<?php echo $nroCuenta;?>">
+                <input type="text" id="cuentaOrigen" name="cuentaOrigen" readonly value="<?php echo htmlspecialchars($nroCuenta);?>">
                 
                 <label for="saldo">Saldo</label>
-                <input type="text" id="saldo" name="saldo" readonly value="<?php echo $saldo;?>">
+                <input type="text" id="saldo" name="saldo" readonly value="<?php echo htmlspecialchars($saldo);?>">
             </div>
 
             <div class="form-transferir">
                 <label for="cuentaDestino">Nro cuenta destino</label>
-                <input type="text" id="cuentaDestino" name="cuentaDestino"  readonly value="<?php echo $cuentaDestinatario;?>">
+                <input type="text" id="cuentaDestino" name="cuentaDestino"  readonly value="<?php echo htmlspecialchars($cuentaDestinatario);?>">
             </div>
 
             <div class="form-transferir">
                 <label for="destinatario">Nombre destinatario</label>
-                <input type="text" id="destinatario" name="destinatario"  readonly value="<?php echo $nombreDestinatario; ?>">
+                <input type="text" id="destinatario" name="destinatario"  readonly value="<?php echo htmlspecialchars($nombreDestinatario); ?>">
             </div>
                 <?php if(!isset($cuentaInexistente)):?>
                     <div class="form-transferir-destino">
                         <label for="monto">Monto a transferir</label>
                         <input type="text" id="monto" name="monto">
                     </div>
+                    <div class="form-transferir-destino">
+                        <label for="concepto">Concepto</label>
+                        <input type="textarea" id="concepto" name="concepto" rows="4" required>
+                    </div>
                     <div class="form-submit">
                         <input type="submit" value="Transferir">
                     </div>
+
+                    
                     <?php else:?>
                         <div class="mensajeError">
                             <?php echo "<p>$cuentaInexistente</p>"?>
@@ -121,13 +127,44 @@ $logout= URL_PATH."/index.php?controller=usuarioController&action=logoutUsuario"
             <?php echo "<p>$errores</p>" ?>
         </div>
     <?php else:?>
-    
+        <div class="mensajeExito">
+            <?php echo "<h3>Transferencia exitosa!</h3>" ?>
+        </div>
+    <?php endif?>
+    <?php break;?>
+<?php case 'listarTransferencias':?>
+    <?php if(isset($error)):?>
+        <div class="mensajeError">
+            <?php echo "<p>$error</p>" ?>
+        </div>
+        <?php else:?>
+            <h2 class="titulo-centrado">Listado de Transferencias</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nro Cuenta Origen</th>
+            <th>Nro Cuenta Destinatario</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+            <th>Concepto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($transferencias as $transferencia): ?>
+        <tr>
+            <td><?= htmlspecialchars($transferencia['IdTransaccion']); ?></td>
+            <td><?= htmlspecialchars($transferencia['NroCuentaOrigen']); ?></td>
+            <td><?= htmlspecialchars($transferencia['NroCuentaDestinatario']); ?></td>
+            <td><?= htmlspecialchars($transferencia['Fecha']); ?></td>
+            <td><?= htmlspecialchars($transferencia['Monto']); ?></td>
+            <td><?= htmlspecialchars($transferencia['Concepto']); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
     <?php endif?>
 <?php endswitch ?>
-        
-
-        
-        
     </main>
 </body>
 </html>

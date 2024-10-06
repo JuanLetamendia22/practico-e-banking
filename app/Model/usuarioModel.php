@@ -10,7 +10,12 @@ class Usuario extends conexionBD
     private $nroCuenta;
     private $conexion;
 
-    //Hereda la conexion a BD
+    /**
+     * Permite crear un usuario y acceder a sus funciones
+     * con el parametro nroCuenta permite asignar al objeto los atributos correspondientes al 
+     * usuario que posea dicho numero de cuenta.
+     * @param mixed $nroCuenta
+     */
     public function __construct($nroCuenta=null){
         parent::__construct();
         $this -> conexion = $this -> obtenerConexion();
@@ -75,9 +80,13 @@ class Usuario extends conexionBD
         $stmt->execute([':NroCuenta' => $nroCuenta]);
         return $stmt->fetch() !== false;
     }
-
-    //Logica para incorporar los datos a la BD
-
+    /**
+     * Crea un numero entero random entre 0 y 24 digitos
+     * Luego comprueba que no exista en la base de datos
+     * En caso de que exista el nro se vuelve a llamar a la funcion.
+     * En caso de exito devuelve un string formateado para contener si o si 24 digitos 
+     * @return string
+     */
     private function registrarCuenta() {
         $min = 0;
         $max = (int) pow(10,24)-1;
@@ -103,7 +112,16 @@ class Usuario extends conexionBD
     }
     
     
-
+    /**
+     * Realiza una transaccion a la base de datos y en caso de exito registra usuario y cuenta
+     * Realiza una llamada a la función privada registrar cuenta
+     * Retorna true en caso de exito de lo contrario devuelve falsew
+     * @param string $email
+     * @param string $nombre
+     * @param string $apellido
+     * @param string $password
+     * @return bool
+     */
     public function registrarUsuario($email, $nombre, $apellido, $password) {
         try{
            
@@ -116,10 +134,13 @@ class Usuario extends conexionBD
             //Insertar cuenta en cuentas
             $nroCuenta= $this->registrarCuenta();
             
-            $sqlCuenta = "INSERT INTO cuentas (NroCuenta) VALUES (:NroCuenta)";
+            $sqlCuenta = "INSERT INTO cuentas (NroCuenta, Saldo) VALUES (:NroCuenta, :Saldo)";
             $stmtCuenta = $this->conexion->prepare($sqlCuenta);
 
-            $stmtCuenta->execute([':NroCuenta' => $nroCuenta]);
+            $stmtCuenta->execute([
+                ':NroCuenta' => $nroCuenta,
+                ':Saldo'=>5000
+            ]);
             
             
             // Insertar el nuevo usuario en la tabla usuarios
@@ -149,7 +170,13 @@ class Usuario extends conexionBD
                     echo "Error: ". $e -> getMessage();
                 } 
     }
-
+    /**
+     * Permite loguear usuarios, recibe email y contraseña como parametro
+     * Devuelve el usuario en caso de exito de lo contrario devuelve false
+     * @param string $email
+     * @param string $password
+     * @return mixed
+     */
     public function loginUsuario($email, $password){
     
         if ($this->existeEmail($email)) {

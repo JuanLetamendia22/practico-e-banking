@@ -8,6 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
             header('Location:'.URL_PATH.'/index.php?controller=homeController&action=mostrarHome');
             exit();
         }
+        
     }
 
 //RUTAS
@@ -39,7 +40,13 @@ $registro = URL_PATH.'/index.php?controller=usuarioController&action=registrarUs
     <main>
         <h1 class="titulo titulo-centrado">Acceso a e-Bank</h1>
         <hr>
-
+        
+        <?php if(isset($_SESSION['mensajeExitoRegistro'])):?>
+            <div>
+                 <p class="mensajeExito"> <?php echo $_SESSION['mensajeExitoRegistro'] ?> </p>
+                <?php unset( $_SESSION['mensajeExitoRegistro'] );?>
+            </div>
+        <?php endif?>
         <form class="form" id="form-login" method="POST" action="<?php echo $action; ?>">
     
                 <label class="item-form" for="correo">Correo </label>
@@ -51,6 +58,12 @@ $registro = URL_PATH.'/index.php?controller=usuarioController&action=registrarUs
                     <p class="aviso-off" id="avisoPassword"> *El campo contraseña es necesario, debe contener al menos 8 digitos, <br>mayusculas, minusculas y al menos un número, sin caracteres especiales.</p>
                 
                 <input class="item-form" type="submit" value="Acceder"/>
+
+                <?php if(isset($errorLogin)):?>
+            <div class="mensajeError">
+                <?php echo $errorLogin; ?>
+            </div>
+         <?php endif?>
         </form>
         
         <hr>
