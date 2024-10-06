@@ -83,31 +83,20 @@ class Usuario extends conexionBD
     /**
      * Crea un numero entero random entre 0 y 24 digitos
      * Luego comprueba que no exista en la base de datos
-     * En caso de que exista el nro se vuelve a llamar a la funcion.
      * En caso de exito devuelve un string formateado para contener si o si 24 digitos 
      * @return string
      */
     private function registrarCuenta() {
+        $longitud = 24; 
         $min = 0;
-        $max = (int) pow(10,24)-1;
-
-        $nroCuenta =mt_rand($min,$max);
-
-        if($this->existeNroCuenta($nroCuenta)){
-            //Recursividad si el nro ya existe.
-            $this->registrarCuenta();
-            
-        }else{
-           
-            $nroCuenta= (string) $nroCuenta;
-            //Formateo el numero para que si es un numero random menor de 24 digitos, se rellene con 0 a la izquierda
-            $numeroFormateado = str_pad( $nroCuenta, 24, '0', STR_PAD_LEFT);
-            
-            return $numeroFormateado;
-            
-            
-        }
-
+        $max = (int) pow(10, $longitud) - 1;
+    
+        do {
+            $nroCuenta = mt_rand($min, $max);
+        } while ($this->existeNroCuenta($nroCuenta));
+    
+        // Convertir a string y rellenar con ceros a la izquierda si es necesario.
+        return str_pad((string) $nroCuenta, $longitud, '0', STR_PAD_LEFT);
 
     }
     
@@ -166,8 +155,9 @@ class Usuario extends conexionBD
                }catch (Exception $e) {       
                     // Revertir transaccion
                     $this->conexion->rollBack();
-
+                    
                     echo "Error: ". $e -> getMessage();
+                    return false;
                 } 
     }
     /**

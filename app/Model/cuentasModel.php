@@ -133,8 +133,9 @@ class Transaccion extends ConexionBD{
             }catch (Exception $e) {       
                 // Revertir transaccion
                 $this->conexion->rollBack();
-
                 echo "Error: ". $e -> getMessage();
+
+                return false;
             } 
         }else{
             return false;
